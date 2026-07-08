@@ -56,7 +56,9 @@ GEM
     minitest (6.0.6)
       drb (~> 2.0)
       prism (~> 1.5)
+    multi_json (1.21.1)
     mustermann (3.1.1)
+    nio4r (2.7.5)
     nokogiri (1.19.4)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
@@ -67,6 +69,8 @@ GEM
       ast (~> 2.4.1)
       racc
     prism (1.9.0)
+    puma (8.0.2)
+      nio4r (~> 2.0)
     racc (1.8.1)
     rack (3.2.6)
     rack-protection (4.2.1)
@@ -76,6 +80,8 @@ GEM
     rack-session (2.1.2)
       base64 (>= 0.1.0)
       rack (>= 3.0.0)
+    rackup (2.3.1)
+      rack (>= 3)
     rails-dom-testing (2.3.0)
       activesupport (>= 5.0.0)
       minitest
@@ -99,6 +105,13 @@ GEM
     rubocop-ast (1.50.0)
       parser (>= 3.3.7.2)
       prism (~> 1.7)
+    rubocop-fjord (0.4.0)
+      rubocop (>= 1.0)
+      rubocop-performance
+    rubocop-performance (1.26.1)
+      lint_roller (~> 1.1)
+      rubocop (>= 1.75.0, < 2.0)
+      rubocop-ast (>= 1.47.1, < 2.0)
     ruby-progressbar (1.13.0)
     securerandom (0.4.1)
     sinatra (4.2.1)
@@ -107,6 +120,12 @@ GEM
       rack (>= 3.0.0, < 4)
       rack-protection (= 4.2.1)
       rack-session (>= 2.0.0, < 3)
+      tilt (~> 2.0)
+    sinatra-contrib (4.2.1)
+      multi_json (>= 0.0.2)
+      mustermann (~> 3.0)
+      rack-protection (= 4.2.1)
+      sinatra (= 4.2.1)
       tilt (~> 2.0)
     smart_properties (1.17.0)
     tilt (2.8.0)
@@ -123,7 +142,11 @@ PLATFORMS
 
 DEPENDENCIES
   erb_lint
+  puma (~> 8.0)
+  rackup (~> 2.3)
+  rubocop-fjord
   sinatra (~> 4.2)
+  sinatra-contrib
 
 BUNDLED WITH
    2.6.2
