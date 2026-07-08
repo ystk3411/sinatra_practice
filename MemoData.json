@@ -1,16 +1,3 @@
 {
-  "data": [
-    {
-      "title": "aaaa",
-      "content": "aaaa"
-    },
-    {
-      "title": "XSS",
-      "content": "<script>alert('XSS')</script>"
-    },
-    {
-      "title": "zzaa",
-      "content": "zza"
-    }
-  ]
+  "data": []
 }

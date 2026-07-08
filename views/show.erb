@@ -8,7 +8,7 @@
   <form action="/memo/<%= params[:id] %>/edit" method="GET">
     <button type="submit">編集</button>
   </form>
-  <form action="/memo/<%= params[:id] %>/delete" method="POST">
+  <form action="/memo/<%= params[:id] %>" method="POST">
     <input type="hidden" value="delete" name="_method">
     <button type="submit">削除</button>
   </form>
