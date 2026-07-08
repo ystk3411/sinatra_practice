@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'sinatra'
-require 'sinatra/reloader'
 require 'json'
 use Rack::MethodOverride
 set :erb, escape_html: true

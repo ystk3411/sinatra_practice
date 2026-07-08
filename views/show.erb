@@ -1,8 +1,8 @@
 <h3>
-  <%= h(@memo_data[:title]) %>
+  <%== h(@memo_data[:title]) %>
 </h3>
 <div>
-  <%= h(@memo_data[:content]) %>
+  <%== h(@memo_data[:content]) %>
 </div>
 <div class="show-page-button-container">
   <form action="/memo/<%= params[:id] %>/edit" method="GET">
