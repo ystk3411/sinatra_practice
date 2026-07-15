@@ -15,7 +15,12 @@
 }
 
 .show-page-button-container {
-  display: flex; 
+  display: flex;
+  flex-direction: column; 
   gap: 10px;
   margin-top: 30px;
+}
+
+.show-title {
+  font-size: 30px;
 }

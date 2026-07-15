@@ -1,13 +1,11 @@
-<h3>
+<div class="show-title">
   <%== h(@memo_data[:title]) %>
-</h3>
+</div>
 <div>
   <%== h(@memo_data[:content]) %>
 </div>
 <div class="show-page-button-container">
-  <form action="/memo/<%= params[:id] %>/edit" method="GET">
-    <button type="submit">編集</button>
-  </form>
+  <a href="/memo/<%= params[:id] %>/edit" class="edit-page-link">編集</a>
   <form action="/memo/<%= params[:id] %>" method="POST">
     <input type="hidden" value="delete" name="_method">
     <button type="submit">削除</button>
