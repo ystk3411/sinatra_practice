@@ -61,7 +61,7 @@ def parse_json
   if File.exist?(JSON_FILE)
     JSON.parse(File.read(JSON_FILE), symbolize_names: true)
   else
-    {data:[]}
+    { data: [] }
   end
 end
 
