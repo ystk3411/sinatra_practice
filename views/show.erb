@@ -1,8 +1,8 @@
 <div class="show-title">
-  <%== h(@memo_data[:title]) %>
+  <%= h(@memo_data[:title]) %>
 </div>
 <div>
-  <%== h(@memo_data[:content]) %>
+  <%= h(@memo_data[:content]) %>
 </div>
 <div class="show-page-button-container">
   <a href="/memo/<%= params[:id] %>/edit" class="edit-page-link">編集</a>
