@@ -5,4 +5,10 @@
 2.`git clone`したディレクトへ移動<br/>
 3.`bundle install`コマンドを入力<br/>
 4.`bundle exec ruby myapp.rb`コマンドを入力<br/>
-5.http://localhost:4567へアクセスして動作を確認
+5.`memo_data.json`の名称の以下の構造のJSONファイルを作成
+```json
+{
+  "data": []
+}
+```
+6.http://localhost:4567へアクセスして動作を確認

@@ -58,7 +58,11 @@ delete '/memo/:id' do
 end
 
 def parse_json
-  JSON.parse(File.read(JSON_FILE), symbolize_names: true)
+  if File.exist?(JSON_FILE)
+    JSON.parse(File.read(JSON_FILE), symbolize_names: true)
+  else
+    {data:[]}
+  end
 end
 
 helpers do
