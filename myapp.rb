@@ -4,6 +4,7 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
 require 'securerandom'
+
 use Rack::MethodOverride
 JSON_FILE = 'memo_data.json'
 
