@@ -21,9 +21,7 @@ post '/memos' do
   memo = load_memo
   new_memo = { SecureRandom.uuid.to_sym => {title: params[:title], content: params[:content]} }
   memo[SecureRandom.uuid.to_sym] = { title: params[:title], content: params[:content] }
-  File.open(JSON_FILE, 'w') do |file|
-    file.write(JSON.generate(memo))
-  end
+  save_mamo(JSON_FILE, memo)
   redirect '/memos'
 end
 
@@ -42,19 +40,14 @@ patch '/memos/:id' do
   update_memo = memo[params[:id].to_sym]
   update_memo[:title] = params[:title]
   update_memo[:content] = params[:content]
-
-  File.open(JSON_FILE, 'w') do |file|
-    file.write(JSON.pretty_generate(memo))
-  end
+  save_mamo(JSON_FILE, memo)
   redirect "/memos/#{params[:id]}"
 end
 
 delete '/memos/:id' do
   memo = load_memo
   memo.delete(params[:id].to_sym)
-  File.open(JSON_FILE, 'w') do |file|
-    file.write(JSON.pretty_generate(memo))
-  end
+  save_mamo(JSON_FILE, memo)
   redirect '/memos'
 end
 
@@ -63,6 +56,12 @@ def load_memo
     JSON.parse(File.read(JSON_FILE), symbolize_names: true)
   else
     { data: [] }
+  end
+end
+
+def save_mamo(file_path, memo)
+  File.open(file_path, 'w') do |file|
+    file.write(JSON.generate(memo))
   end
 end
 
