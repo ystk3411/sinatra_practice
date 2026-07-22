@@ -1,11 +1,11 @@
 <div>
-  <a href="/memo/new" class="btn">
+  <a href="/memos/new" class="btn">
     追加
   </a>
   <ul>
     <% @memo_data[:data].each do |memo| %>
       <li>
-        <a href="/memo/<%= memo[:id] %>"><%= memo[:title] %></a>
+        <a href="/memos/<%= memo[:id] %>"><%= memo[:title] %></a>
       </li>
     <% end %>
   </ul>
