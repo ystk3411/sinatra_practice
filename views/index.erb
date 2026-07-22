@@ -3,9 +3,9 @@
     追加
   </a>
   <ul>
-    <% @memo[:data].each do |memo| %>
+    <% @memo.each do |id, memo| %>
       <li>
-        <a href="/memos/<%= memo[:id] %>"><%= memo[:title] %></a>
+        <a href="/memos/<%= id %>"><%= memo[:title] %></a>
       </li>
     <% end %>
   </ul>

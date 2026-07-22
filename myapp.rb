@@ -19,8 +19,8 @@ end
 
 post '/memos' do
   memo = load_memo
-  new_memo = { id: SecureRandom.uuid, title: params[:title], content: params[:content] }
-  memo[:data] << new_memo
+  new_memo = { SecureRandom.uuid.to_sym => {title: params[:title], content: params[:content]} }
+  memo[SecureRandom.uuid.to_sym] = { title: params[:title], content: params[:content] }
   File.open(JSON_FILE, 'w') do |file|
     file.write(JSON.generate(memo))
   end
@@ -28,18 +28,18 @@ post '/memos' do
 end
 
 get '/memos/:id' do
-  @memo = load_memo[:data].find { |memo| memo[:id] == params[:id] }
+  @memo = load_memo[params[:id].to_sym]
   erb :show
 end
 
 get '/memos/:id/edit' do
-  @memo = load_memo[:data].find { |memo| memo[:id] == params[:id] }
+  @memo = load_memo[params[:id].to_sym]
   erb :edit
 end
 
 patch '/memos/:id' do
   memo = load_memo
-  update_memo = memo[:data].find { |memo| memo[:id] == params[:id] }
+  update_memo = memo[params[:id].to_sym]
   update_memo[:title] = params[:title]
   update_memo[:content] = params[:content]
 
@@ -51,7 +51,7 @@ end
 
 delete '/memos/:id' do
   memo = load_memo
-  memo[:data].delete_if { |memo| memo[:id] == params[:id] }
+  memo.delete(params[:id].to_sym)
   File.open(JSON_FILE, 'w') do |file|
     file.write(JSON.pretty_generate(memo))
   end
