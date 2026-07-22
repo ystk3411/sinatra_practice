@@ -1,12 +1,12 @@
 <div>
   <form action="/memos/<%= params[:id] %>" method="POST">
-    <label>
+    <label for="title">
       タイトル
     </label>
     <div>
       <input type="text" name="title" value="<%= @memo[:title] %>">
     </div>
-    <label>
+    <label for="content">
       本文
     </label>
     <div>
