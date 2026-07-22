@@ -3,7 +3,7 @@
     追加
   </a>
   <ul>
-    <% @memo_data[:data].each do |memo| %>
+    <% @memo[:data].each do |memo| %>
       <li>
         <a href="/memos/<%= memo[:id] %>"><%= memo[:title] %></a>
       </li>

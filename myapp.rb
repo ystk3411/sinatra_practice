@@ -6,10 +6,10 @@ require 'json'
 require 'securerandom'
 
 use Rack::MethodOverride
-JSON_FILE = 'memo_data.json'
+JSON_FILE = 'memo.json'
 
 get '/memos' do
-  @memo_data = parse_json
+  @memo = load_memo
   erb :index
 end
 
@@ -18,47 +18,47 @@ get '/memos/new' do
 end
 
 post '/memos' do
-  memo_data = parse_json
+  memo = load_memo
   new_memo = { id: SecureRandom.uuid, title: params[:title], content: params[:content] }
-  memo_data[:data] << new_memo
+  memo[:data] << new_memo
   File.open(JSON_FILE, 'w') do |file|
-    file.write(JSON.generate(memo_data))
+    file.write(JSON.generate(memo))
   end
   redirect '/memos'
 end
 
 get '/memos/:id' do
-  @memo_data = parse_json[:data].find { |memo| memo[:id] == params[:id] }
+  @memo = load_memo[:data].find { |memo| memo[:id] == params[:id] }
   erb :show
 end
 
 get '/memos/:id/edit' do
-  @memo_data = parse_json[:data].find { |memo| memo[:id] == params[:id] }
+  @memo = load_memo[:data].find { |memo| memo[:id] == params[:id] }
   erb :edit
 end
 
 patch '/memos/:id' do
-  memo_data = parse_json
-  update_memo_data = memo_data[:data].find { |memo| memo[:id] == params[:id] }
-  update_memo_data[:title] = params[:title]
-  update_memo_data[:content] = params[:content]
+  memo = load_memo
+  update_memo = memo[:data].find { |memo| memo[:id] == params[:id] }
+  update_memo[:title] = params[:title]
+  update_memo[:content] = params[:content]
 
   File.open(JSON_FILE, 'w') do |file|
-    file.write(JSON.pretty_generate(memo_data))
+    file.write(JSON.pretty_generate(memo))
   end
   redirect "/memos/#{params[:id]}"
 end
 
 delete '/memos/:id' do
-  memo_data = parse_json
-  memo_data[:data].delete_if { |memo| memo[:id] == params[:id] }
+  memo = load_memo
+  memo[:data].delete_if { |memo| memo[:id] == params[:id] }
   File.open(JSON_FILE, 'w') do |file|
-    file.write(JSON.pretty_generate(memo_data))
+    file.write(JSON.pretty_generate(memo))
   end
   redirect '/memos'
 end
 
-def parse_json
+def load_memo
   if File.exist?(JSON_FILE)
     JSON.parse(File.read(JSON_FILE), symbolize_names: true)
   else
