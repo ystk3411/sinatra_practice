@@ -52,11 +52,7 @@ delete '/memos/:id' do
 end
 
 def load_memo
-  if File.exist?(JSON_FILE)
-    JSON.parse(File.read(JSON_FILE), symbolize_names: true)
-  else
-    { data: [] }
-  end
+  JSON.parse(File.read(JSON_FILE), symbolize_names: true)
 end
 
 def save_mamo(file_path, memo)
