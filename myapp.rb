@@ -19,7 +19,6 @@ end
 
 post '/memos' do
   memo = load_memo
-  new_memo = { SecureRandom.uuid.to_sym => {title: params[:title], content: params[:content]} }
   memo[SecureRandom.uuid.to_sym] = { title: params[:title], content: params[:content] }
   save_mamo(JSON_FILE, memo)
   redirect '/memos'
