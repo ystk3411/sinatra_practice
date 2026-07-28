@@ -9,7 +9,7 @@ use Rack::MethodOverride
 JSON_FILE = 'memo.json'
 
 get '/memos' do
-  @memo = load_memo
+  @memos = load_memos
   erb :index
 end
 
@@ -18,45 +18,45 @@ get '/memos/new' do
 end
 
 post '/memos' do
-  memo = load_memo
-  memo[SecureRandom.uuid.to_sym] = { title: params[:title], content: params[:content] }
-  save_mamo(JSON_FILE, memo)
+  memos = load_memos
+  memos[SecureRandom.uuid.to_sym] = { title: params[:title], content: params[:content] }
+  save_memos(JSON_FILE, memos)
   redirect '/memos'
 end
 
 get '/memos/:id' do
-  @memo = load_memo[params[:id].to_sym]
+  @memo = load_memos[params[:id].to_sym]
   erb :show
 end
 
 get '/memos/:id/edit' do
-  @memo = load_memo[params[:id].to_sym]
+  @memo = load_memos[params[:id].to_sym]
   erb :edit
 end
 
 patch '/memos/:id' do
-  memo = load_memo
-  update_memo = memo[params[:id].to_sym]
-  update_memo[:title] = params[:title]
-  update_memo[:content] = params[:content]
-  save_mamo(JSON_FILE, memo)
+  memos = load_memos
+  memo = memos[params[:id].to_sym]
+  memo[:title] = params[:title]
+  memo[:content] = params[:content]
+  save_memos(JSON_FILE, memos)
   redirect "/memos/#{params[:id]}"
 end
 
 delete '/memos/:id' do
-  memo = load_memo
-  memo.delete(params[:id].to_sym)
-  save_mamo(JSON_FILE, memo)
+  memos = load_memos
+  memos.delete(params[:id].to_sym)
+  save_memos(JSON_FILE, memos)
   redirect '/memos'
 end
 
-def load_memo
+def load_memos
   JSON.parse(File.read(JSON_FILE), symbolize_names: true)
 end
 
-def save_mamo(file_path, memo)
+def save_memos(file_path, memos)
   File.open(file_path, 'w') do |file|
-    file.write(JSON.generate(memo))
+    file.write(JSON.generate(memos))
   end
 end
 
