@@ -14,3 +14,4 @@ end
 
 gem 'puma', '~> 8.0'
 gem 'rackup', '~> 2.3'
+gem 'pg'
