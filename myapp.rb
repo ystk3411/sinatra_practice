@@ -43,12 +43,12 @@ post '/memos' do
 end
 
 get '/memos/:id' do
-  @memo = settings.db_conn.exec_params('SELECT * FROM memos WHERE id = $1 LIMIT 1', [params[:id]])[0]
+  @memo = find_memo(params[:id])
   erb :show
 end
 
 get '/memos/:id/edit' do
-  @memo = settings.db_conn.exec_params('SELECT * FROM memos WHERE id = $1 LIMIT 1', [params[:id]])[0]
+  @memo = find_memo(params[:id])
   erb :edit
 end
 
@@ -63,6 +63,10 @@ end
 delete '/memos/:id' do
   settings.db_conn.exec_params('DELETE FROM memos WHERE id = $1', [params[:id]])
   redirect '/memos'
+end
+
+def find_memo(id)
+  settings.db_conn.exec_params('SELECT * FROM memos WHERE id = $1 LIMIT 1', [id])[0]
 end
 
 helpers do
