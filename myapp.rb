@@ -23,7 +23,7 @@ configure do
 end
 
 get '/memos' do
-  @memos = settings.db_conn.exec('SELECT * FROM memos')
+  @memos = settings.db_conn.exec('SELECT * FROM memos ORDER BY title ASC, id ASC')
   erb :index
 end
 
