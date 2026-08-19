@@ -4,12 +4,26 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
 require 'securerandom'
+require 'pg'
 
 use Rack::MethodOverride
 JSON_FILE = 'memo.json'
 
+configure do
+  conn = PG.connect(dbname: 'postgres')
+  set :db_conn, conn
+
+  settings.db_conn.exec <<-SQL
+    CREATE TABLE IF NOT EXISTS memos (
+      id SERIAL PRIMARY KEY,
+      title VARCHAR(50) NOT NULL,
+      content TEXT
+    );
+  SQL
+end
+
 get '/memos' do
-  @memos = load_memos
+  @memos = settings.db_conn.exec('SELECT * FROM memos ORDER BY title ASC, id ASC')
   erb :index
 end
 
@@ -18,46 +32,41 @@ get '/memos/new' do
 end
 
 post '/memos' do
-  memos = load_memos
-  memos[SecureRandom.uuid.to_sym] = { title: params[:title], content: params[:content] }
-  save_memos(JSON_FILE, memos)
+  title = params[:title]
+  content = params[:content]
+
+  settings.db_conn.exec_params(
+    'INSERT INTO memos (title, content) VALUES ($1, $2)',
+    [title, content]
+  )
   redirect '/memos'
 end
 
 get '/memos/:id' do
-  @memo = load_memos[params[:id].to_sym]
+  @memo = find_memo(params[:id])
   erb :show
 end
 
 get '/memos/:id/edit' do
-  @memo = load_memos[params[:id].to_sym]
+  @memo = find_memo(params[:id])
   erb :edit
 end
 
 patch '/memos/:id' do
-  memos = load_memos
-  memo = memos[params[:id].to_sym]
-  memo[:title] = params[:title]
-  memo[:content] = params[:content]
-  save_memos(JSON_FILE, memos)
+  settings.db_conn.exec_params(
+    'UPDATE memos SET title = $1, content = $2 WHERE id = $3',
+    [params[:title], params[:content], params[:id]]
+  )
   redirect "/memos/#{params[:id]}"
 end
 
 delete '/memos/:id' do
-  memos = load_memos
-  memos.delete(params[:id].to_sym)
-  save_memos(JSON_FILE, memos)
+  settings.db_conn.exec_params('DELETE FROM memos WHERE id = $1', [params[:id]])
   redirect '/memos'
 end
 
-def load_memos
-  JSON.parse(File.read(JSON_FILE), symbolize_names: true)
-end
-
-def save_memos(file_path, memos)
-  File.open(file_path, 'w') do |file|
-    file.write(JSON.generate(memos))
-  end
+def find_memo(id)
+  settings.db_conn.exec_params('SELECT * FROM memos WHERE id = $1 LIMIT 1', [id])[0]
 end
 
 helpers do
